@@ -2,8 +2,7 @@ from flask import Flask, render_template, request
 app = Flask(__name__)
 
 from openai import OpenAI  
-OPENAI_API_KEY =  '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'
-
+OPENAI_API_KEY =  'API  KEYHERE'
 def get_chat(prompt):
     client = OpenAI(api_key=OPENAI_API_KEY)
     response = client.chat.completions.create(
