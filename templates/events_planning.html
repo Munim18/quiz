@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html >
+<head>
+    
+    <title>Event Booking Portal</title>
+<style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background: linear-gradient(135deg, #e0f7fa, #80deea);
+        margin: 0;
+        padding: 0;
+        color: #333;
+        animation: fadeIn 0.8s ease-in;
+        font-size: 16px;
+    }
+
+    .container {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 30px 20px;
+    }
+
+    nav {
+        background: linear-gradient(to right, #00bcd4, #0097a7);
+        padding: 15px;
+        text-align: center;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    nav a {
+        color: white;
+        font-weight: bold;
+        margin: 0 20px;
+        font-size: 1.1rem;
+        cursor: pointer;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    nav a:hover {
+        color: #ffe082;
+    }
+
+    .view {
+        display: none;
+        animation: slideFade 0.4s ease-in-out;
+    }
+
+    .view.active {
+        display: block;
+    }
+
+    h1, h2, h3 {
+        color: #006064;
+        margin-top: 0;
+    }
+
+    .card {
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+        margin-bottom: 20px;
+        transition: transform 0.2s;
+    }
+
+    .card:hover {
+        transform: translateY(-3px);
+    }
+
+    form {
+        background-color: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        margin-bottom: 30px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: 500;
+    }
+
+    input, button {
+        padding: 10px;
+        width: 100%;
+        max-width: 100%;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        font-size: 1rem;
+        box-sizing: border-box;
+    }
+
+    button {
+        background: linear-gradient(to right, #3f3cf7, #8556dc);
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.2s;
+    }
+
+    button:hover {
+        background: linear-gradient(to right, #4600a7, #7563d8);
+        transform: scale(1.02);
+    }
+
+    ul {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    li {
+        margin-bottom: 12px;
+        padding-bottom: 10px;
+        border-bottom: 1px dashed #ccc;
+    }
+
+    hr {
+        border: 0;
+        border-top: 1px solid #ccc;
+        margin: 40px 0;
+    }
+
+    @keyframes slideFade {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+   
+    @media (max-width: 600px) {
+        nav a {
+            display: block;
+            margin: 10px 0;
+        }
+
+        .card, form {
+            padding: 15px;
+        }
+    }
+</style>
+
+<body>
+    <nav>
+        <a onclick="showView('eventsView')">Available Events</a>
+        <a onclick="showView('managerView')">Manager Panel</a>
+    </nav>
+
+
+    <div id="eventsView" class="view active">
+        <h1>Available Events</h1>
+        {% if events %}
+            {% for event in events %}
+                <div class="card">
+                    <strong><b>{{ event.name }}</b></strong><br>
+                    Date: {{ event.date }}<br>
+                    Location: {{ event.location }}<br><br>
+                    <button onclick="startBooking({{ event.id }} , '{{ event.name }}', '{{ event.date }}', '{{ event.location }}')">Book Now</button>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No events available.</p>
+        {% endif %}
+    </div>
+
+    
+    <div id="bookingFormView" class="view">
+        <h2>Book Event</h2>
+        <p id="eventDetails"></p>
+        <form id="bookingForm" method="POST">
+            <input type="hidden" name="event_id" id="event_id">
+            <label>Name:</label>
+            <input type="text" name="name" required>
+
+            <label>Email:</label>
+            <input type="email" name="email" required>
+
+            <label>Phone:</label>
+            <input type="text" name="phone" required>
+
+            <label>Vendor:</label>
+            <input type="text" name="vendor" required>
+
+            <button type="submit">Confirm Booking</button>
+        </form>
+    </div>
+
+
+    <div id="managerView" class="view">
+        <h2>Create New Event</h2>
+        <form method="POST" action="/manage/">
+            <label>Event Name:</label>
+            <input type="text" name="name" required>
+
+            <label>Date:</label>
+            <input type="text" name="date" placeholder="DD-MM-YYYY" required>
+
+            <label>Location:</label>
+            <input type="text" name="location" required>
+
+            <button type="submit">Create Event</button>
+        </form>
+
+        <hr>
+        <h2>Bookings Per Event</h2>
+        {% for event in events %}
+            <div class="card">
+                <h3><b>{{ event.name }} — {{ event.date }} @ {{ event.location }}</b></h3>
+                {% if event.id in event_bookings %}
+                    <ul>
+                        {% for booking in event_bookings[event.id] %}
+                            <li>
+                                {{ booking.name }} ({{ booking.email }})<br>
+                                Vendor: {{ booking.vendor }} | Phone: {{ booking.phone }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p><em>No bookings yet.</em></p>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        function showView(id) {
+            document.querySelectorAll('.view').forEach(div => div.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        function startBooking(eventId, name, date, location) {
+            showView('bookingFormView');
+            document.getElementById('event_id').value = eventId;
+            document.getElementById('eventDetails').innerText =
+                `${name} — ${date} @ ${location}`;
+
+            const form = document.getElementById('bookingForm');
+            form.action = `/book/${eventId}`;
+        }
+    </script>
+</body>
+</html>
+
+

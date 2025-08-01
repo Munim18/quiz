@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Quick Quiz</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #74ebd5, #9face6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background-color: white;
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      max-width: 700px;
+      width: 100%;
+    }
+
+    h1, h2 {
+      text-align: center;
+    }
+
+    .question {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+
+    .options {
+      margin: 10px 0;
+    }
+
+    .options label {
+      display: block;
+      padding: 5px 10px;
+      background: #f2f2f2;
+      margin: 5px 0;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .submit-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #5c67f2;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      display: block;
+      width: 100%;
+      font-size: 1rem;
+    }
+
+    .wrong-question {
+      background: #ffe0e0;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-left: 5px solid #e60000;
+    }
+
+    .score {
+      font-size: 1.3rem;
+      text-align: center;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+
+    .restart {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .restart a {
+      background: #5c67f2;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    {% if not submitted %}
+      <h1>Quick Quiz</h1>
+      <form method="POST">
+        {% for i, q in enumerate(quiz_data) %}
+          <div class="question">{{ i+1 }}. {{ q.question }}</div>
+          <div class="options">
+            {% for option in q.options %}
+              <label>
+                <input type="radio" name="q{{i}}" value="{{ option }}" required> {{ option }}
+              </label>
+            {% endfor %}
+          </div>
+        {% endfor %}
+        <button type="submit" class="submit-btn">Submit Quiz</button>
+      </form>
+    {% else %}
+      <h1>Quiz Results</h1>
+      <div class="score">
+        You scored {{ score }} out of {{ quiz_data|length }}!
+      </div>
+
+      {% if wrong %}
+        <h2>Incorrect Answers</h2>
+        {% for item in wrong %}
+          <div class="wrong-question">
+            <p><strong>Question:</strong> {{ item.question }}</p>
+            <p><strong>Your Answer:</strong> {{ item.your_answer or "No answer" }}</p>
+            <p><strong>Correct Answer:</strong> {{ item.correct_answer }}</p>
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      <div class="restart">
+        <a href="/">Try Again</a>
+      </div>
+    {% endif %}
+  </div>
+</body>
+</html>
+

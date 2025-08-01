@@ -1,0 +1,65 @@
+ <!DOCTYPE html>
+<html>
+<head>
+  <title>Select User</title>
+  <style>
+    body {
+      background: linear-gradient(to right, #bdc3c7, #2c3e50);
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      color: #fff;
+    }
+
+    form {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 25px 30px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    button {
+      background-color: #061066;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0a179d;
+    }
+  </style>
+</head>
+<body>
+
+  <form method="POST">
+    <h2>Enter the Maximum Age Requirement</h2>
+    <input type="number" name="max_age" placeholder="e.g. 30" required>
+    <button type="submit">View Profile</button>
+  </form>
+
+  <form method="POST">
+    <h2>Select a User</h2>
+    <select name="username" required>
+      {% for username in usernames %}
+        <option value="{{ username }}">{{ username|capitalize }}</option>
+      {% endfor %}
+    </select>
+    <button type="submit">View Profile</button>
+  </form>
+
+</body>
+</html>

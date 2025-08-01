@@ -1,0 +1,103 @@
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>User Profile</title>
+  <style>
+    body {
+      background-color: rgba(122, 128, 135, 0.564);
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 20px;
+      color: #222;
+    }
+
+    h2 {
+      text-align: center;
+      color: rgb(6, 6, 102);
+      margin-top: 40px;
+    }
+
+    .profile {
+      background-color: #fff;
+      padding: 20px 30px;
+      margin: 20px auto;
+      max-width: 600px;
+      border-radius: 10px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    }
+
+    p {
+      font-size: 1rem;
+      margin: 10px 0;
+    }
+
+    hr {
+      border: none;
+      height: 2px;
+      background-color: rgb(14, 45, 169);
+      margin: 30px 0;
+    }
+
+    a {
+      display: inline-block;
+      margin-top: 20px;
+      text-decoration: none;
+      color: #fff;
+      background-color: rgb(6, 6, 102);
+      padding: 10px 20px;
+      border-radius: 6px;
+      transition: background-color 0.3s ease;
+    }
+
+    a:hover {
+      background-color: rgb(14, 45, 169);
+    }
+
+    .not-found {
+      text-align: center;
+      color: darkred;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  {% if users %}
+    <h2>Users With Maximum Age {{ max_age }}</h2>
+    {% for user in users %}
+      <div class="profile">
+        <p><strong>Name:</strong> {{ user.name }}</p>
+        <p><strong>Age:</strong> {{ user.age }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+      </div>
+      <hr>
+    {% endfor %}
+    <div style="text-align: center;">
+      <a href="/user_selection/">Go Back</a>
+    </div>
+
+  {% elif user %}
+    <h2>User Profile</h2>
+    <div class="profile">
+      <p><strong>Name:</strong> {{ user.name }}</p>
+      <p><strong>Age:</strong> {{ user.age }}</p>
+      <p><strong>Email:</strong> {{ user.email }}</p>
+    </div>
+    <div style="text-align: center;">
+      <a href="/user_selection/">Go Back</a>
+    </div>
+
+  {% else %}
+    <p class="not-found">No user data available.</p>
+    <div style="text-align: center;">
+      <a href="/user_selection/">Go Back</a>
+    </div>
+  {% endif %}
+
+</body>
+</html>
+

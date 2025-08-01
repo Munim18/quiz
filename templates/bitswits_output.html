@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+ 
+    <title>Bitswits.ai - Response</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #3498db;
+            --primary-dark: #2a7abd;
+            --bg-gradient: linear-gradient(to right, #a1c4fd, #cfdef3);
+            --bg-light: #f9fbff;
+            --box-bg: #ffffff;
+            --box-border: #e2ebf7;
+            --text-main: #2c3e50;
+            --text-label: #555;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-gradient);
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .response-container {
+            background: var(--box-bg);
+            padding: 40px 30px;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            width: 100%;
+            max-width: 860px;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .response-container:hover {
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--text-main);
+            font-size: 2rem;
+            margin-bottom: 30px;
+        }
+
+        .section {
+            margin-bottom: 24px;
+        }
+
+        .label {
+            font-weight: 600;
+            color: var(--text-label);
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        .box {
+            background: var(--bg-light);
+            padding: 18px 20px;
+            border-radius: 12px;
+            border: 1px solid var(--box-border);
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            color: #333;
+            font-size: 0.96rem;
+            line-height: 1.6;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 22px;
+            background: var(--primary);
+            color: white;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .back-button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 600px) {
+            .response-container {
+                padding: 30px 20px;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="response-container" role="main">
+        <h2>AI Response</h2>
+
+        <div class="section">
+            <div class="label">Your Prompt:</div>
+            <div class="box">{{ user_prompt }}</div>
+        </div>
+
+        <div class="section">
+            <div class="label">AI's Response:</div>
+            <div class="box">{{ response }}</div>
+        </div>
+
+        <a href="/bitswits.ai" class="back-button" aria-label="Go back to input page">← Back</a>
+    </div>
+</body>
+</html>
